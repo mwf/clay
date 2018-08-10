@@ -3,7 +3,7 @@ include ../env.mk
 $(shell vgo get github.com/googleapis/googleapis)
 GOOGLEAPIS_PKG:=$(shell vgo list -m all | grep github.com/googleapis/googleapis | awk '{print ($$4 != "" ? $$4 : $$1)}')
 GOOGLEAPIS_VERSION:=$(shell vgo list -m all | grep github.com/googleapis/googleapis | awk '{print ($$5 != "" ? $$5 : $$2)}')
-GOOGLEAPIS_PATH:=${FIRST_GOPATH}/src/mod/${GOOGLEAPIS_PKG}@${GOOGLEAPIS_VERSION}
+GOOGLEAPIS_PATH:=${FIRST_GOPATH}/pkg/mod/${GOOGLEAPIS_PKG}@${GOOGLEAPIS_VERSION}
 
 pwd:
 	@pwd
@@ -19,7 +19,7 @@ protoc: protoc-build
 build:
 	vgo mod vendor
 	go build -o main main.go
-	vgo build -o main main.go
+	vgo build -o main .
 
 test: pwd clean protoc build
 	vgo test -v .
